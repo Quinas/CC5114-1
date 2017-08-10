@@ -7,15 +7,15 @@ import java.util.Queue;
 
 public class LogicGates {
 
-  public static AbstractNeuralNetwork genericPerceptron(List<Double> weights, int bias) {
+  public static AbstractNeuralNetwork genericOneNeuronNetwork(List<Double> weights,
+      AbstractNeuron neuron) {
     AbstractNeuralNetwork network = new AbstractNeuralNetwork() {
 
       @Override
-      protected void setupInput(List<Edge> inputEdges, List<Integer> dataList) {
-        Iterator<Integer> iterator = dataList.iterator();
+      protected void setupInput(List<Edge> inputEdges, List<Double> dataList) {
+        Iterator<Double> iterator = dataList.iterator();
         for (Edge edge : inputEdges) {
-          edge.getToNeuron().addInputEdge(
-              new Edge(null, edge.getToNeuron(), edge.processEdge(iterator.next())));
+          edge.getToNeuron().addInput(edge.processEdge(iterator.next()));
         }
       }
 
@@ -25,14 +25,14 @@ public class LogicGates {
       }
 
       @Override
-      public List<Integer> calculateResult() {
-        List<Integer> output = new ArrayList<Integer>();
+      public List<Double> calculateResult() {
+        List<Double> output = new ArrayList<Double>();
         output.add(0, network.get(0).getResult());
         return output;
       }
 
     };
-    network.addNeuron(0, new Perceptron(bias));
+    network.addNeuron(0, neuron);
     for (Double weight : weights) {
       network.addInputEdge(0, weight);
     }
@@ -44,7 +44,7 @@ public class LogicGates {
     List<Double> weights = new ArrayList<Double>();
     weights.add(-2.0);
     weights.add(-2.0);
-    return genericPerceptron(weights, 3);
+    return genericOneNeuronNetwork(weights, new Perceptron(3.0));
   }
 
 
@@ -52,25 +52,25 @@ public class LogicGates {
     List<Double> weights = new ArrayList<Double>();
     weights.add(1.0);
     weights.add(1.0);
-    return genericPerceptron(weights, -1);
+    return genericOneNeuronNetwork(weights, new Perceptron(-1.0));
   }
 
   public static AbstractNeuralNetwork OrGate() {
     List<Double> weights = new ArrayList<Double>();
     weights.add(1.0);
     weights.add(1.0);
-    return genericPerceptron(weights, 0);
+    return genericOneNeuronNetwork(weights, new Perceptron(0.0));
   }
 
   public static AbstractNeuralNetwork SumGate() {
     AbstractNeuralNetwork network = new AbstractNeuralNetwork() {
 
       @Override
-      protected void setupInput(List<Edge> inputEdges, List<Integer> dataList) {
-        network.get(0).addInputEdge(new Edge(null, network.get(0), -2.0 * dataList.get(0)));
-        network.get(0).addInputEdge(new Edge(null, network.get(0), -2.0 * dataList.get(1)));
-        network.get(1).addInputEdge(new Edge(null, network.get(1), -2.0 * dataList.get(0)));
-        network.get(2).addInputEdge(new Edge(null, network.get(2), -2.0 * dataList.get(1)));
+      protected void setupInput(List<Edge> inputEdges, List<Double> dataList) {
+        network.get(0).addInput(-2.0 * dataList.get(0));
+        network.get(0).addInput(-2.0 * dataList.get(1));
+        network.get(1).addInput(-2.0 * dataList.get(0));
+        network.get(2).addInput(-2.0 * dataList.get(1));
       }
 
       @Override
@@ -79,8 +79,8 @@ public class LogicGates {
       }
 
       @Override
-      public List<Integer> calculateResult() {
-        List<Integer> output = new ArrayList<Integer>();
+      public List<Double> calculateResult() {
+        List<Double> output = new ArrayList<Double>();
         output.add(0, network.get(4).getResult());
         output.add(1, network.get(3).getResult());
         return output;
@@ -88,7 +88,7 @@ public class LogicGates {
 
     };
     for (int i = 0; i < 5; ++i) {
-      network.addNeuron(i, new Perceptron(3));
+      network.addNeuron(i, new Perceptron(3.0));
     }
     network.addEdge(0, 1, -2.0);
     network.addEdge(0, 2, -2.0);

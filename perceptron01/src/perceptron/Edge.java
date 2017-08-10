@@ -35,7 +35,7 @@ public class Edge {
     this.weight = d;
   }
 
-  public Double processEdge(Integer input) {
-    return input * weight;
+  public Double processEdge(Double result) {
+    return result * weight;
   }
 }

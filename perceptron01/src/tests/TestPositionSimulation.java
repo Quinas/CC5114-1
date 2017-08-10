@@ -14,22 +14,31 @@ import perceptron.PositionSimulation;
 public class TestPositionSimulation {
 
   PositionSimulation perceptron;
-  List<Integer> inputTest1;
-  List<Integer> inputTest2;
-  List<Integer> inputTest3;
+  Random random;
+  List<List<Double>> inputTest1;
+  List<List<Double>> inputTest2;
+  List<List<Double>> inputTest3;
 
   @Before
   public void setUp() throws Exception {
-    perceptron = new PositionSimulation(0.01);
-    inputTest1 = new ArrayList<Integer>();
-    inputTest2 = new ArrayList<Integer>();
-    inputTest3 = new ArrayList<Integer>();
-    Random random = new Random();
+    perceptron = new PositionSimulation();
+    perceptron.initNetwork();
+    random = new Random();
+    inputTest1 = new ArrayList<List<Double>>();
+    inputTest2 = new ArrayList<List<Double>>();
+    inputTest3 = new ArrayList<List<Double>>();
     for (int i = 0; i < 100000; ++i) {
-      inputTest1.add(random.nextInt(1000000));
-      inputTest2.add(random.nextInt(1000000));
-      inputTest3.add(random.nextInt(1000000));
+      inputTest1.add(getTest());
+      inputTest2.add(getTest());
+      inputTest3.add(getTest());
     }
+  }
+
+  public List<Double> getTest() {
+    List<Double> test = new ArrayList<Double>();
+    test.add(new Double(random.nextInt(1000000)));
+    test.add(new Double(random.nextInt(1000000)));
+    return test;
   }
 
   @Test

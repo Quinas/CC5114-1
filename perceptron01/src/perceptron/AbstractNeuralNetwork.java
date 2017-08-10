@@ -39,11 +39,11 @@ public abstract class AbstractNeuralNetwork {
     adjacencyList.put(neuron, new ArrayList<Edge>());
   }
 
-  protected abstract void setupInput(List<Edge> inputEdges, List<Integer> dataList);
+  protected abstract void setupInput(List<Edge> inputEdges, List<Double> dataList);
 
   protected abstract void pushFirstLayer(Queue<AbstractNeuron> queue);
 
-  public void simulate(List<Integer> dataList) {
+  public void simulate(List<Double> dataList) {
     Map<AbstractNeuron, Boolean> visited = new HashMap<AbstractNeuron, Boolean>();
     for (AbstractNeuron neuron : network) {
       neuron.clearInput();
@@ -59,15 +59,14 @@ public abstract class AbstractNeuralNetwork {
         continue;
       }
       visited.put(currentNeuron, true);
-      Integer result = currentNeuron.getResult();
+      Double result = currentNeuron.getResult();
       for (Edge edge : adjacencyList.get(currentNeuron)) {
         queue.add(edge.toNeuron);
-        edge.toNeuron
-            .addInputEdge(new Edge(currentNeuron, edge.toNeuron, edge.processEdge(result)));
+        edge.toNeuron.addInput(edge.processEdge(result));
       }
     }
   }
 
-  public abstract List<Integer> calculateResult();
+  public abstract List<Double> calculateResult();
 
 }
