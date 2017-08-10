@@ -3,9 +3,9 @@ package perceptron;
 public class Edge {
   AbstractNeuron fromNeuron;
   AbstractNeuron toNeuron;
-  Integer weight;
+  Double weight;
 
-  public Edge(AbstractNeuron fromNeuron, AbstractNeuron toNeuron, Integer weight) {
+  public Edge(AbstractNeuron fromNeuron, AbstractNeuron toNeuron, Double weight) {
     this.fromNeuron = fromNeuron;
     this.toNeuron = toNeuron;
     this.weight = weight;
@@ -27,15 +27,15 @@ public class Edge {
     this.toNeuron = toNeuron;
   }
 
-  public Integer getWeight() {
+  public Double getWeight() {
     return weight;
   }
 
-  public void setWeight(Integer weight) {
-    this.weight = weight;
+  public void setWeight(double d) {
+    this.weight = d;
   }
 
-  public Integer processEdge(Integer input) {
+  public Double processEdge(Integer input) {
     return input * weight;
   }
 }

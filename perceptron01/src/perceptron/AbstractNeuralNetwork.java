@@ -10,11 +10,13 @@ import java.util.Queue;
 public abstract class AbstractNeuralNetwork {
   protected List<AbstractNeuron> network;
   protected Map<AbstractNeuron, List<Edge>> adjacencyList;
+  protected List<Edge> inputEdges;
 
 
-  public AbstractNeuralNetwork(int size) {
-    network = new ArrayList<AbstractNeuron>(size);
-    adjacencyList = new HashMap<AbstractNeuron, List<Edge>>(size);
+  public AbstractNeuralNetwork() {
+    network = new ArrayList<AbstractNeuron>();
+    adjacencyList = new HashMap<AbstractNeuron, List<Edge>>();
+    inputEdges = new ArrayList<Edge>();
   }
 
   public void addNeuron(int index, AbstractNeuron neuron) {
@@ -23,12 +25,21 @@ public abstract class AbstractNeuralNetwork {
     adjacencyList.put(neuron, new ArrayList<Edge>());
   }
 
-  public void addEdge(int fromNeuron, int toNeuron, int weight) {
+  public void addEdge(int fromNeuron, int toNeuron, Double weight) {
     adjacencyList.get(network.get(fromNeuron)).add(
         new Edge(network.get(fromNeuron), network.get(toNeuron), weight));
   }
 
-  protected abstract void setupInput(List<Integer> dataList);
+  public void addInputEdge(int toNeuron, Double weight) {
+    inputEdges.add(new Edge(null, network.get(toNeuron), weight));
+  }
+
+  public void setNeuron(int index, AbstractNeuron neuron) {
+    network.set(index, neuron);
+    adjacencyList.put(neuron, new ArrayList<Edge>());
+  }
+
+  protected abstract void setupInput(List<Edge> inputEdges, List<Integer> dataList);
 
   protected abstract void pushFirstLayer(Queue<AbstractNeuron> queue);
 
@@ -40,7 +51,7 @@ public abstract class AbstractNeuralNetwork {
     }
 
     Queue<AbstractNeuron> queue = new LinkedList<AbstractNeuron>();
-    setupInput(dataList);
+    setupInput(inputEdges, dataList);
     pushFirstLayer(queue);
     while (!queue.isEmpty()) {
       AbstractNeuron currentNeuron = queue.poll();
@@ -58,4 +69,5 @@ public abstract class AbstractNeuralNetwork {
   }
 
   public abstract List<Integer> calculateResult();
+
 }
