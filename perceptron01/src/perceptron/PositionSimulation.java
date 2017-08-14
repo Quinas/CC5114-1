@@ -23,7 +23,7 @@ public class PositionSimulation extends AbstractSimulation {
 
   @Override
   public void makeCorrection(List<Double> obtained, List<Double> expected, List<Double> input) {
-    if (!obtained.equals(expected)) {
+    if (!valid(expected, obtained)) {
       Edge e1 = network.inputEdges.get(0);
       Edge e2 = network.inputEdges.get(1);
       if (expected.get(0) == 0.0) {
@@ -43,6 +43,11 @@ public class PositionSimulation extends AbstractSimulation {
     Double y = input.get(1);
     expected.add(y > x ? 1.0 : 0.0); // Linear equation: y = x
     return expected;
+  }
+
+  @Override
+  public boolean valid(List<Double> obtained, List<Double> expected) {
+    return obtained.equals(expected);
   }
 
 }

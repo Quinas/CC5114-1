@@ -13,7 +13,7 @@ import perceptron.PositionSimulation;
 
 public class TestPositionSimulation {
 
-  PositionSimulation perceptron;
+  PositionSimulation simulation;
   Random random;
   List<List<Double>> inputTest1;
   List<List<Double>> inputTest2;
@@ -21,8 +21,8 @@ public class TestPositionSimulation {
 
   @Before
   public void setUp() throws Exception {
-    perceptron = new PositionSimulation();
-    perceptron.initNetwork();
+    simulation = new PositionSimulation();
+    simulation.initNetwork();
     random = new Random();
     inputTest1 = new ArrayList<List<Double>>();
     inputTest2 = new ArrayList<List<Double>>();
@@ -43,13 +43,13 @@ public class TestPositionSimulation {
 
   @Test
   public void testTraining() {
-    double accuracy1 = perceptron.accuracy(inputTest1);
-    double accuracy2 = perceptron.accuracy(inputTest2);
-    double accuracy3 = perceptron.accuracy(inputTest3);
-    perceptron.training(inputTest1);
-    assertTrue(accuracy1 < perceptron.accuracy(inputTest1) - 0.4);
-    assertTrue(accuracy2 < perceptron.accuracy(inputTest2) - 0.4);
-    assertTrue(accuracy3 < perceptron.accuracy(inputTest3) - 0.4);
+    double accuracy1 = simulation.accuracy(inputTest1);
+    double accuracy2 = simulation.accuracy(inputTest2);
+    double accuracy3 = simulation.accuracy(inputTest3);
+    simulation.training(inputTest1);
+    assertTrue(accuracy1 < simulation.accuracy(inputTest1) - 0.4);
+    assertTrue(accuracy2 < simulation.accuracy(inputTest2) - 0.4);
+    assertTrue(accuracy3 < simulation.accuracy(inputTest3) - 0.4);
   }
 
 }

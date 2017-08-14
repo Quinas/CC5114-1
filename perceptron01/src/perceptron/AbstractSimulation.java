@@ -13,6 +13,9 @@ public abstract class AbstractSimulation {
 
   public abstract List<Double> calculateExpected(List<Double> input);
 
+
+  public abstract boolean valid(List<Double> obtained, List<Double> expected);
+
   public List<Double> simulateCase(List<Double> input) {
     network.simulate(input);
     return network.calculateResult();
@@ -26,10 +29,11 @@ public abstract class AbstractSimulation {
   }
 
 
+
   public Double accuracy(List<List<Double>> testList) {
     Double output = 0.0;
     for (List<Double> test : testList) {
-      if (simulateCase(test).equals(calculateExpected(test))) {
+      if (valid(simulateCase(test), calculateExpected(test))) {
         output++;
       }
     }

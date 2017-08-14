@@ -11,7 +11,7 @@ public class SigmoidNeuron extends AbstractNeuron {
 
   @Override
   public Double getResult() {
-    return 1.0 / (1.0 + Math.exp(input) + bias);
+    return 1.0 / (1.0 + Math.exp(-input - bias));
   }
 
 }
