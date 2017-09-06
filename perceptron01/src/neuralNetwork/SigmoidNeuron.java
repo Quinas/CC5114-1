@@ -1,8 +1,6 @@
-package perceptron;
+package neuralNetwork;
 
 public class SigmoidNeuron extends AbstractNeuron {
-
-  Double bias;
 
   public SigmoidNeuron(Double bias) {
     this.bias = bias;
@@ -10,8 +8,7 @@ public class SigmoidNeuron extends AbstractNeuron {
 
 
   @Override
-  public Double getResult() {
-    return 1.0 / (1.0 + Math.exp(-input - bias));
+  public void calculateResult() {
+    output = 1.0 / (1.0 + Math.exp(-input - bias));
   }
-
 }
